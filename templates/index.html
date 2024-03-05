@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pangrams</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align items at the top of the screen */
+        }
+
+        .container {
+            text-align: center;
+            margin-top: 20px; /* Add some top margin for spacing */
+        }
+
+        .black, .green, .yellow {
+            display: inline-block;
+            padding: 5px;
+            border-radius: 5px;
+            margin-bottom: 5px; /* Add space between rows */
+        }
+
+        .black {
+            color: white;
+            background-color: black;
+        }
+
+        .green {
+            color: white;
+            background-color: green;
+        }
+
+        .yellow {
+            color: black;
+            background-color: yellow;
+        }
+        
+        .correct-box {
+            background-color: lightgreen;
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+    </style>
+    <script>
+        // Function to show error message and hide it after 1 second
+        function showErrorMessage(message) {
+            var errorMessage = document.getElementById('error-message');
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            setTimeout(function() {
+                errorMessage.style.display = 'none';
+            }, 1000); // Hide the error message after 1000 milliseconds (1 second)
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Pangrams</h1>
+        <p>{{ scrambled_letters }}</p>
+        <div class="error-message" id="error-message"></div>
+        <form method="POST">
+            <label for="guess">Enter a guess:</label>
+            <input type="text" id="guess" name="guess" maxlength="20">
+            <input type="submit" value="Submit">
+        </form>
+        {% if guessed_list %}
+            <ul>
+                {% for i in range(guessed_list | length) %}
+                    <li>
+                        {% set word = guessed_list[i] %}
+                        {% set color = colors_list[i] %}
+                        {% for j in range(word | length) %}
+                            <span class="{% if color[j] == 'X' %}black{% elif color[j] == 'G' %}green{% else %}yellow{% endif %}">
+                                {{ word[j] }}
+                            </span>
+                        {% endfor %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if correct_guess %}
+             <div class="correct-box">
+                Correct: 
+                {% for letter in answer %}
+                    <span class="green">{{ letter }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        {% if error_message %}
+            <script>
+                showErrorMessage("{{ error_message }}");
+            </script>
+        {% endif %}
+    </div>
+</body>
+</html>
