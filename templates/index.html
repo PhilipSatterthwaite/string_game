@@ -13,6 +13,12 @@
             align-items: flex-start; /* Align items at the top of the screen */
         }
 
+        h1 {
+            margin: 0; /* Remove default margin */
+            padding: 20px 0; /* Adjust top and bottom padding as needed */
+            text-align: center; /* Center align the text */
+        }
+
         .container {
             text-align: center;
             margin-top: 20px; /* Add some top margin for spacing */
@@ -23,6 +29,9 @@
             padding: 5px;
             border-radius: 5px;
             margin-bottom: 5px; /* Add space between rows */
+            width: 30px; /* Set a fixed width */
+            height: 30px; /* Set a fixed height */
+            line-height: 30px; /* Set line height equal to height for vertical centering */
         }
 
         .black {
@@ -46,6 +55,45 @@
             margin-top: 20px;
             border-radius: 5px;
         }
+
+        /* Error message style */
+        .error-message {
+            position: absolute; /* Position absolutely */
+            top: 0; /* Align to the top of the container */
+            left: 50%; /* Center horizontally */
+            transform: translateX(-50%); /* Adjust for centering */
+            background-color: black; /* Black background */
+            color: white; /* White text */
+            padding: 10px; /* Add padding */
+            border-radius: 5px; /* Rounded corners */
+            display: none; /* Initially hidden */
+        }
+
+        .scrambled-letters {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align items at the top of the container */
+            margin-bottom: 20px;
+            height: 200px; /* Adjust height of the container */
+            width: 500px;
+            position: relative;
+        }
+
+        .letter-scrambled {
+            display: inline-block;
+            padding: 5px;
+            border-radius: 50%; /* Make it a circle */
+            margin-bottom: 5px; /* Add space between rows */
+            color: black;
+            background-color: lightgray;
+            width: 30px; /* Adjust width as needed */
+            height: 30px; /* Adjust height as needed */
+            text-align: center; /* Center the text horizontally */
+            line-height: 30px; /* Center the text vertically */
+        }
+
+
+
     </style>
     <script>
         // Function to show error message and hide it after 1 second
@@ -61,8 +109,35 @@
 </head>
 <body>
     <div class="container">
-        <h1>Pangrams</h1>
-        <p>{{ scrambled_letters }}</p>
+        <h1>Vines</h1>
+        <div class="scrambled-letters">
+            {% set container_width = 500-30 %} <!-- Adjust the width of the container as needed -->
+            {% set container_height = 200-30 %} <!-- Adjust the height of the container as needed -->
+            {% set center_x = container_width / 2 %}
+            {% set center_y = container_height / 2 %}
+            {% set num_letters = scrambled_letters | length %}
+            {% set geo_length = scrambled_letters | length %}
+
+            {% if num_letters % 2 == 1 %}
+                {% set geo_length = scrambled_letters | length - 1 %}
+                {% set x = center_x%}
+                {% set y = center_y%}
+                <span class="letter-scrambled" style="position: absolute; top: {{ y }}px; left: {{ x }}px;">
+                    {{ scrambled_letters[geo_length] }}
+                </span>
+            {% endif %} 
+
+            {% for i in range(geo_length) %}
+                {% set theta = (i - 0.5) * 2 * 3.14159 / (geo_length) %}
+                {% set radius = (geo_length) * 10 - 10 %} <!-- Adjust the radius as needed -->
+                {% set x = center_x + radius * calculate_cos(theta) %}
+                {% set y = center_y + radius * calculate_sin(theta) %}
+                <span class="letter-scrambled" style="position: absolute; top: {{ y }}px; left: {{ x }}px;">
+                    {{ scrambled_letters[i] }}
+                </span>
+            {% endfor %}
+               
+        </div>
         <div class="error-message" id="error-message"></div>
         <form method="POST">
             <label for="guess">Enter a guess:</label>

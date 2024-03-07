@@ -1,15 +1,27 @@
 from flask import Flask, render_template, request
 import random
 import links
+import math
 
 app = Flask(__name__)
-answer = "AUGMENTATION"
+answer = "FRAILTY"
 unique_letters = ''.join(set(answer))
 scrambled_letters = ''.join(random.sample(unique_letters, len(unique_letters)))
 guessed_list = []
 colors_list = []
 guess = ""
 correct_guess = False
+
+def calculate_cos(angle):
+    return math.cos(angle)
+
+def calculate_sin(angle):
+    return math.sin(angle)
+
+
+# Add the custom functions to the Jinja2 environment
+app.jinja_env.globals.update(calculate_cos=calculate_cos)
+app.jinja_env.globals.update(calculate_sin=calculate_sin)
 
 def reset_variables():
     global guessed_list
@@ -56,7 +68,7 @@ def index():
             word_colors = links.find_links(guess, answer)
             colors_list.append(word_colors)
     elif request.method == 'GET':
-        form_data = dict(request.form)  # Convert ImmutableMultiDict to dict
+        form_data   = dict(request.form)  # Convert ImmutableMultiDict to dict
         if 'action' not in form_data:
             form_data['action'] = ['new_word']
         if form_data['action'][0] == 'new_word':

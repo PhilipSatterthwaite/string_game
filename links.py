@@ -50,7 +50,7 @@ def find_links(guess, answer):
     while True:
         col_tag = 'G'
         while len(G_locs) != 1 and G_locs[1][0] < sum(G_locs[0]):
-            G_locs[0][1] = sum(G_locs[1])-1
+            G_locs[0][1] = sum(G_locs[1])
             col_tag = 'Y'
             del G_locs[1]
         loc = G_locs[0]
@@ -62,5 +62,5 @@ def find_links(guess, answer):
             del G_locs[0]
 
    
-
+    print(colored)
     return ''.join(colored)
