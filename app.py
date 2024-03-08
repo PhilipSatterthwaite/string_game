@@ -11,6 +11,11 @@ guessed_list = []
 colors_list = []
 guess = ""
 correct_guess = False
+allowed_words = []
+# Open the file in read mode
+with open('filtered_words.txt', 'r') as file:
+    for line in file:
+        allowed_words.append(line.strip())
 
 def calculate_cos(angle):
     return math.cos(angle)
@@ -33,11 +38,15 @@ def reset_variables():
     colors_list = []
     correct_guess = False
 
-def get_user_string(letters, guessed_list):
+def get_user_string(letters, guessed_list, allowed_words):
     user_input = request.form['guess'].upper()
+    print(user_input)
+    print(request.form)
     if all(char in letters for char in user_input): # check valid letters
         if len(user_input) >= 3:                    # check long enough
             if user_input not in guessed_list:      # check if in list
+                if user_input not in allowed_words:
+                    return user_input, "Not a word."
                 return user_input, None
             else:
                 return user_input, "Already guessed."
@@ -53,9 +62,10 @@ def index():
     global scrambled_letters
     global colors_list
     global correct_guess
+    global allowed_words
 
     if request.method == 'POST':
-        guess, error_message = get_user_string(scrambled_letters, guessed_list)
+        guess, error_message = get_user_string(scrambled_letters, guessed_list, allowed_words)
         if error_message is not None:
             return render_template('index.html', scrambled_letters=scrambled_letters, error_message=error_message, guessed_list=guessed_list, colors_list=colors_list, correct_guess=correct_guess)
         guessed_list.append(guess)
@@ -77,4 +87,5 @@ def index():
     return render_template('index.html', scrambled_letters=scrambled_letters, guessed_list=guessed_list, colors_list=colors_list, correct_guess=correct_guess)
 
 if __name__ == '__main__':
+
     app.run(debug=True)
