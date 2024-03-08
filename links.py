@@ -43,10 +43,10 @@ def find_links(guess, answer):
                 G_locs[idx_b] = [-1,-1] # Delete element B if its sum is less than or equal to A's sum
 
     G_locs = [element for element in G_locs if element != [-1, -1]]
+    G_locs_saved = G_locs.copy()
 
     if not G_locs:
-        return ''.join(colored)
-    
+        return ''.join(colored), G_locs
     while True:
         col_tag = 'G'
         while len(G_locs) != 1 and G_locs[1][0] < sum(G_locs[0]):
@@ -61,6 +61,4 @@ def find_links(guess, answer):
         else:
             del G_locs[0]
 
-   
-    print(colored)
-    return ''.join(colored)
+    return ''.join(colored), G_locs_saved

@@ -71,8 +71,10 @@
             padding: 10px;
             margin-top: 20px;
             border-radius: 5px;
+            width: 300px; /* Adjust the width as needed */
+            margin-left: auto; /* Automatically center horizontally */
+            margin-right: auto; /* Automatically center horizontally */
         }
-
         /* Error message style */
         .error-message {
             position: absolute; /* Position absolutely */
@@ -163,9 +165,10 @@
 <body>
     <div class="container">
         <h1>Vines</h1>
+        <!--<img src="/static/vines.jpg" alt="Vines">-->
         <div class="scrambled-letters">
-            {% set container_width = 500-40 %} <!-- Adjust the width of the container as needed -->
-            {% set container_height = 200-40 %} <!-- Adjust the height of the container as needed -->
+            {% set container_width = 500-45 %} <!-- Adjust the width of the container as needed -->
+            {% set container_height = 200-45 %} <!-- Adjust the height of the container as needed -->
             {% set center_x = container_width / 2 %}
             {% set center_y = container_height / 2 %}
             {% set num_letters = scrambled_letters | length %}
@@ -178,7 +181,7 @@
                 <span class="letter-scrambled" style="position: absolute; top: {{ y }}px; left: {{ x }}px;">
                     {{ scrambled_letters[geo_length] }}
                 </span>
-            {% endif %} 
+            {% endif %}
 
             {% for i in range(geo_length) %}
                 {% set theta = (i - 0.5) * 2 * 3.14159 / (geo_length) %}
@@ -206,31 +209,41 @@
         {% if guessed_list %}
             <ul style="list-style-type: none; padding: 0;">
                 {% for i in range(guessed_list | length) %}
-                    <li>
+                    <li style="position: relative;">
+                        {% set letter_width = 45 %}
+                        {% set container_width = 500 %}
                         {% set word = guessed_list[i] %}
                         {% set color = colors_list[i] %}
+                        {% set wordWidth = word | length * letter_width - 2 * letter_width %} <!-- Assuming each letter occupies 20px width -->
                         {% for j in range(word | length) %}
                             <span class="{% if color[j] == 'X' %}black{% elif color[j] == 'G' %}green{% else %}yellow{% endif %}">
                                 {{ word[j] }}
                             </span>
                         {% endfor %}
-                    </li>
+                        {% set word_links = link_locs[i] %} 
+                        {% if word_links %}
+                            {% for link in word_links %}
+                                {% set start_letter_index = link[0] %}
+                                {% set line_length = link[1] %}
+                                {% set line_start_x = (start_letter_index - (word | length) / 2 + 1/2) * letter_width + container_width/2%} {# Adjusting start position relative to the center #}
+                                {% set line_width = line_length * letter_width - letter_width%}
+                                <span class="word-line" style="position: absolute; left: {{ line_start_x }}px; top: 35%; width: {{ line_width }}px; height: 10px; background-color: darkgreen; z-index: -1;"></span>
+                                {% endfor %}
+                        {% endif %}
+                        </li>
                 {% endfor %}
             </ul>
         {% endif %}
 
         <form id="guess-form" method="POST" onsubmit="return false;"> <!-- Prevent default form submission -->
-            <input type="text" id="guess" name="guess" maxlength="20" style="display: none;"> <!-- Hidden input field for guess -->
+            <input type="text" id="guess" name="guess" maxlength="11" style="display: none;"> <!-- Hidden input field for guess -->
         </form>
 
         <div id="entered-letters"></div> <!-- Container for entered letters -->
 
         {% if correct_guess %}
              <div class="correct-box">
-                Correct: 
-                {% for letter in answer %}
-                    <span class="green">{{ letter }}</span>
-                {% endfor %}
+                Correct!
             </div>
         {% endif %}
         
