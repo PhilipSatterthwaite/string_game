@@ -3,24 +3,45 @@ import random
 import links
 import math
 from gen_word_list.gen_word_list import make_word_list
+import random
 
 app = Flask(__name__)
 app.static_folder = 'static'
-answer = "FRAILTY"
+
+def pick_random_word(file_path):
+    with open(file_path, 'r') as f:
+        words = f.readlines()
+        random_word = random.choice(words).strip().upper()  # Remove leading/trailing whitespace
+    return random_word
+
+#-------------------------------------------------------------------------------------
+answer = pick_random_word("gen_word_list/z_perfectfilt_7.txt")
+gen_file = True
+#-------------------------------------------------------------------------------------
+
 unique_letters = ''.join(set(answer))
 scrambled_letters = ''.join(random.sample(unique_letters, len(unique_letters)))
 guessed_list = []
 colors_list = []
 guess = ""
 correct_guess = False
-allowed_words = make_word_list(answer)
 link_locs = []
+
+if gen_file == True:
+    allowed_words = make_word_list(answer)
+else:
+    allowed_words = []
+    # Open the file in read mode
+    with open('valid_words.txt', 'r') as file:
+        for line in file:
+            allowed_words.append(line.strip())
 
 def calculate_cos(angle):
     return math.cos(angle)
 
 def calculate_sin(angle):
     return math.sin(angle)
+
 
 
 # Add the custom functions to the Jinja2 environment

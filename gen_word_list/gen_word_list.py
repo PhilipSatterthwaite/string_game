@@ -1,7 +1,7 @@
 def make_word_list(word):
 
-    input_file = "gen_word_list/words_alpha.txt"  # Assuming words_alpha.txt is in the same directory
-    output_file = "filtered_words.txt"
+    input_file = "gen_word_list/z_words_alpha.txt"  # Assuming words_alpha.txt is in the same directory
+    output_file = "valid_words.txt"
     letter_set = ''.join(sorted(set(word.lower()), key=word.lower().index))  # Obtain unique letters while preserving order
 
     with open(input_file, 'r') as f:

@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vines</title>
     <style>
-        /*body, h1, label, input[type="text"], input[type="submit"], ul {
-            font-family: 'Bebas Neue', sans-serif;
-        }*/
+        body, h1, label, input[type="text"], input[type="submit"], ul {
+            font-family: 'Arial';
+        }
         body {
             margin: 0;
             height: 100vh;
@@ -35,6 +35,7 @@
             width: 30px; /* Set a fixed width */
             height: 30px; /* Set a fixed height */
             line-height: 30px; /* Set line height equal to height for vertical centering */
+            font-weight: bold; /* Make the letters bold */
         }
         
         .input-letters {
@@ -68,6 +69,15 @@
         
         .correct-box {
             background-color: lightgreen;
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 5px;
+            width: 300px; /* Adjust the width as needed */
+            margin-left: auto; /* Automatically center horizontally */
+            margin-right: auto; /* Automatically center horizontally */
+        }
+        .lose-box {
+            background-color: red;
             padding: 10px;
             margin-top: 20px;
             border-radius: 5px;
@@ -109,6 +119,8 @@
             height: 30px; /* Adjust height as needed */
             text-align: center; /* Center the text horizontally */
             line-height: 30px; /* Center the text vertically */
+            font-weight: bold; /* Make the letters bold */
+
         }
 
 
@@ -127,8 +139,7 @@
         
         function handleKeyPress(event) {
             var keyPressed = event.key;
-            var guessField = document.getElementById('guess');
-
+            var guessField = document.getElementById('guess');            
             if ((event.keyCode >= 65 && event.keyCode <= 90)) {
                 // Append the typed character to the guess input field
                 guessField.value += keyPressed.toUpperCase();
@@ -151,7 +162,7 @@
             } else if (event.key === 'Enter') {
                 // If Enter key is pressed, submit the form
                 document.getElementById('guess-form').submit();
-            } 
+            }
         }
 
         // Attach keypress event listener directly to the input field
@@ -234,17 +245,22 @@
                 {% endfor %}
             </ul>
         {% endif %}
-
-        <form id="guess-form" method="POST" onsubmit="return false;"> <!-- Prevent default form submission -->
-            <input type="text" id="guess" name="guess" maxlength="11" style="display: none;"> <!-- Hidden input field for guess -->
-        </form>
-
+        
         <div id="entered-letters"></div> <!-- Container for entered letters -->
+        
+        {% if guessed_list|length >= 6 and not correct_guess %}
+            <div class="lose-box">
+                You lose!
+            </div>
 
-        {% if correct_guess %}
+        {% elif correct_guess %}
              <div class="correct-box">
                 Correct!
             </div>
+        {% else %}
+            <form id="guess-form" method="POST" onsubmit="return false;"> <!-- Prevent default form submission -->
+                <input type="text" id="guess" name="guess" maxlength="11" style="display: none;"> <!-- Hidden input field for guess -->
+            </form>
         {% endif %}
         
         {% if error_message %}
