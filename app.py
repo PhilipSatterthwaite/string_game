@@ -3,7 +3,7 @@ import random
 import links
 import math
 from gen_word_list.gen_word_list import make_word_list
-import random
+
 
 app = Flask(__name__)
 app.static_folder = 'static'
@@ -87,7 +87,7 @@ def index():
 
     if request.method == 'POST':
         guess, error_message = get_user_string(scrambled_letters, guessed_list, allowed_words)
-        if error_message is not None:
+        if error_message:
             return render_template(
                 'index.html', 
                 scrambled_letters=scrambled_letters, 
