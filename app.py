@@ -1,9 +1,8 @@
 from flask import Flask, render_template, request
 import random
-import links
 import math
-from gen_word_list.gen_word_list import make_word_list
-
+from string_game.gen_word_list import gen_word_list
+from string_game import links
 
 app = Flask(__name__)
 app.static_folder = 'static'
@@ -15,7 +14,7 @@ def pick_random_word(file_path):
     return random_word
 
 #-------------------------------------------------------------------------------------
-answer = pick_random_word("gen_word_list/z_perfectfilt_7.txt")
+answer = pick_random_word("/home/noclue/string_game/gen_word_list/z_perfectfilt_7.txt")
 gen_file = True
 #-------------------------------------------------------------------------------------
 
@@ -28,11 +27,11 @@ correct_guess = False
 link_locs = []
 
 if gen_file == True:
-    allowed_words = make_word_list(answer)
+    allowed_words = gen_word_list.make_word_list(answer)
 else:
     allowed_words = []
     # Open the file in read mode
-    with open('valid_words.txt', 'r') as file:
+    with open('/home/noclue/string_game/valid_words.txt', 'r') as file:
         for line in file:
             allowed_words.append(line.strip())
 
@@ -89,17 +88,17 @@ def index():
         guess, error_message = get_user_string(scrambled_letters, guessed_list, allowed_words)
         if error_message:
             return render_template(
-                'index.html', 
-                scrambled_letters=scrambled_letters, 
-                error_message=error_message, 
-                guessed_list=guessed_list, 
-                colors_list=colors_list, 
+                'index.html',
+                scrambled_letters=scrambled_letters,
+                error_message=error_message,
+                guessed_list=guessed_list,
+                colors_list=colors_list,
                 correct_guess=correct_guess,
                 link_locs = link_locs)
         guessed_list.append(guess)
         if guess == answer:
             correct_guess = True
-        
+
         word_colors, G_locs = links.find_links(guess, answer)
         link_locs.append(G_locs)
         colors_list.append(word_colors)
@@ -118,6 +117,7 @@ def index():
         correct_guess=correct_guess,
         link_locs = link_locs
     )
+
 if __name__ == '__main__':
 
     app.run(debug=True)
