@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 import random
 import math
 from string_game.gen_word_list import gen_word_list
@@ -6,6 +6,8 @@ from string_game import links
 
 app = Flask(__name__)
 app.static_folder = 'static'
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+
 
 def pick_random_word(file_path):
     with open(file_path, 'r') as f:
@@ -20,11 +22,8 @@ gen_file = True
 
 unique_letters = ''.join(set(answer))
 scrambled_letters = ''.join(random.sample(unique_letters, len(unique_letters)))
-guessed_list = []
-colors_list = []
-guess = ""
-correct_guess = False
-link_locs = []
+
+
 
 if gen_file == True:
     allowed_words = gen_word_list.make_word_list(answer)
@@ -41,23 +40,16 @@ def calculate_cos(angle):
 def calculate_sin(angle):
     return math.sin(angle)
 
-
-
 # Add the custom functions to the Jinja2 environment
 app.jinja_env.globals.update(calculate_cos=calculate_cos)
 app.jinja_env.globals.update(calculate_sin=calculate_sin)
 
 def reset_variables():
-    global guessed_list
-    global colors_list
-    global guess
-    global correct_guess
-    global link_locs
-    guess = ""
-    guessed_list = []
-    colors_list = []
-    correct_guess = False
-    link_locs = []
+    session['guessed_list'] = []
+    session['colors_list'] = []
+    session['guess'] = ""
+    session['correct_guess'] = False
+    session['link_locs'] = []
 
 def get_user_string(letters, guessed_list, allowed_words):
     user_input = request.form['guess'].upper()
@@ -76,46 +68,43 @@ def get_user_string(letters, guessed_list, allowed_words):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    global guessed_list
-    global guess
-    global scrambled_letters
-    global colors_list
-    global correct_guess
-    global allowed_words
-    global link_locs
+    if 'guessed_list' not in session:
+        reset_variables()
 
     if request.method == 'POST':
-        guess, error_message = get_user_string(scrambled_letters, guessed_list, allowed_words)
+        guess, error_message = get_user_string(session['scrambled_letters'], session['guessed_list'], session['allowed_words'])
         if error_message:
             return render_template(
                 'index.html',
-                scrambled_letters=scrambled_letters,
+                scrambled_letters=session['scrambled_letters'],
                 error_message=error_message,
-                guessed_list=guessed_list,
-                colors_list=colors_list,
-                correct_guess=correct_guess,
-                link_locs = link_locs)
-        guessed_list.append(guess)
-        if guess == answer:
-            correct_guess = True
+                guessed_list=session['guessed_list'],
+                colors_list=session['colors_list'],
+                correct_guess=session['correct_guess'],
+                link_locs=session['link_locs']
+            )
+        session['guessed_list'].append(guess)
+        if guess == session['answer']:
+            session['correct_guess'] = True
 
-        word_colors, G_locs = links.find_links(guess, answer)
-        link_locs.append(G_locs)
-        colors_list.append(word_colors)
+        word_colors, G_locs = links.find_links(guess, session['answer'])
+        session['link_locs'].append(G_locs)
+        session['colors_list'].append(word_colors)
     elif request.method == 'GET':
-        form_data   = dict(request.form)  # Convert ImmutableMultiDict to dict
+        form_data = dict(request.form)  # Convert ImmutableMultiDict to dict
         if 'action' not in form_data:
             form_data['action'] = ['new_word']
         if form_data['action'][0] == 'new_word':
             reset_variables()
-            scrambled_letters = ''.join(random.sample(unique_letters, len(unique_letters)))
+            session['scrambled_letters'] = ''.join(random.sample(set(session['answer']), len(set(session['answer']))))
+
     return render_template(
         'index.html',
-        scrambled_letters=scrambled_letters,
-        guessed_list=guessed_list,
-        colors_list=colors_list,
-        correct_guess=correct_guess,
-        link_locs = link_locs
+        scrambled_letters=session['scrambled_letters'],
+        guessed_list=session['guessed_list'],
+        colors_list=session['colors_list'],
+        correct_guess=session['correct_guess'],
+        link_locs=session['link_locs']
     )
 
 if __name__ == '__main__':
