@@ -56,9 +56,9 @@ def get_user_string(letters, guessed_list, allowed_words):
     if all(char in letters for char in user_input): # check valid letters
         if len(user_input) >= 3:                    # check long enough
             if user_input not in guessed_list:      # check if in list
-                if user_input not in allowed_words:
-                    return user_input, "Not a word."
-                return user_input, None
+                if user_input in allowed_words:     #check if word
+                    return user_input, None  
+                return user_input, "Not a word."
             else:
                 return user_input, "Already guessed."
         else:
@@ -84,10 +84,10 @@ def index():
                 link_locs=session['link_locs']
             )
         session['guessed_list'].append(guess)
-        if guess == session['answer']:
+        if guess == answer:
             session['correct_guess'] = True
 
-        word_colors, G_locs = links.find_links(guess, session['answer'])
+        word_colors, G_locs = links.find_links(guess, answer)
         session['link_locs'].append(G_locs)
         session['colors_list'].append(word_colors)
     elif request.method == 'GET':
@@ -96,7 +96,7 @@ def index():
             form_data['action'] = ['new_word']
         if form_data['action'][0] == 'new_word':
             reset_variables()
-            session['scrambled_letters'] = ''.join(random.sample(set(session['answer']), len(set(session['answer']))))
+            session['scrambled_letters'] = ''.join(random.sample(unique_letters, len(unique_letters)))
 
     return render_template(
         'index.html',
