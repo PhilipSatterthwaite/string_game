@@ -83,7 +83,9 @@ def index():
                 correct_guess=session['correct_guess'],
                 link_locs=session['link_locs']
             )
-        session['guessed_list'].append(guess)
+        guessed_list_update = session.get('guessed_list', []).copy()
+        guessed_list_update.append(guess)
+        session['guessed_list'] = guessed_list_update   
         if guess == answer:
             session['correct_guess'] = True
 
