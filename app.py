@@ -72,7 +72,7 @@ def index():
         reset_variables()
 
     if request.method == 'POST':
-        guess, error_message = get_user_string(session['scrambled_letters'], session['guessed_list'], session['allowed_words'])
+        guess, error_message = get_user_string(session['scrambled_letters'], session['guessed_list'], allowed_words)
         if error_message:
             return render_template(
                 'index.html',

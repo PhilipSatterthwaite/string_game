@@ -4,7 +4,7 @@ import spacy
 def filter_words_by_length(input_file, output_file, min_length=4):
     with open(input_file, 'r') as f:
         # Filter words based on length and absence of 'S'
-        words = [word.strip() for word in f.readlines() if len(word.strip()) >= min_length and 'S' not in word.strip()]
+        words = [word.strip() for word in f.readlines() if len(word.strip()) >= min_length and (word.strip()[-1] != 'S' or word.strip()[-2] == 'S')]
     
     with open(output_file, 'w') as f:
         f.write('\n'.join(words))
