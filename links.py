@@ -58,11 +58,9 @@ def find_links(guess, answer):
         else:
             del G_locs[0]
     
-    if sorted(set(guess)) == sorted(set(answer)):
+    if sorted(set(guess)) == sorted(set(answer)) and guess != answer:
         return ''.join(colored).lower(), G_locs_saved
 
     return ''.join(colored), G_locs_saved
 
 
-links = find_links('FINLANDNNNN','FINLAND')
-print(links)
