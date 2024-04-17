@@ -49,10 +49,7 @@ def find_links(guess, answer):
         return ''.join(colored), G_locs
     while True:
         col_tag = 'G'
-        while len(G_locs) != 1 and G_locs[1][0] < sum(G_locs[0]):
-            G_locs[0][1] = sum(G_locs[1])
-            col_tag = 'Y'
-            del G_locs[1]
+        
         loc = G_locs[0]
         for i in range(loc[0], loc[0] + loc[1]):
             colored[i] = col_tag
@@ -60,5 +57,12 @@ def find_links(guess, answer):
             break
         else:
             del G_locs[0]
+    
+    if sorted(set(guess)) == sorted(set(answer)):
+        return ''.join(colored).lower(), G_locs_saved
 
     return ''.join(colored), G_locs_saved
+
+
+links = find_links('FINLANDNNNN','FINLAND')
+print(links)

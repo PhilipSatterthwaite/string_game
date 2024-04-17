@@ -63,7 +63,14 @@ pangram_length = 7
 find_perfect_bool = True
 filter_infreq_bool = True
 frequency = 10 ** (-6) #between 0 and 1
+
+
 # --------------------------------------------------------
+#1. filter out words less than 4 letters long. get rid of S plurals (ending in SS is ok)
+#2. find pangrams with the correct number of letters
+#3. find perfect pangrams
+#4. filter pangrams
+
 if __name__ == "__main__":
     if filter_length_bool is True:
         input_file = "z_words_alpha.txt"

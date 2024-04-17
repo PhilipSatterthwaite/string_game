@@ -27,7 +27,7 @@
             margin-top: 20px; /* Add some top margin for spacing */
         }
 
-        .black, .green, .yellow {
+        .black, .green {
             display: inline-block;
             padding: 5px;
             border-radius: 5px;
@@ -36,6 +36,18 @@
             height: 30px; /* Set a fixed height */
             line-height: 30px; /* Set line height equal to height for vertical centering */
             font-weight: bold; /* Make the letters bold */
+        }
+
+        .blackpan, .greenpan{
+            display: inline-block;
+            padding: 5px;
+            border-radius: 5px;
+            margin-bottom: 5px; /* Add space between rows */
+            width: 30px; /* Set a fixed width */
+            height: 30px; /* Set a fixed height */
+            line-height: 30px; /* Set line height equal to height for vertical centering */
+            font-weight: bold; /* Make the letters bold */
+            border: 2px solid gold; /* Add a gold border */
         }
         
         .input-letters {
@@ -62,9 +74,14 @@
             background-color: green;
         }
 
-        .yellow {
-            color: black;
-            background-color: yellow;
+        .blackpan {
+            color: white;
+            background-color: black;
+        }
+
+        .greenpan {
+            color: white;
+            background-color: green;
         }
         
         .correct-box {
@@ -227,7 +244,7 @@
                         {% set color = colors_list[i] %}
                         {% set wordWidth = word | length * letter_width - 2 * letter_width %} <!-- Assuming each letter occupies 20px width -->
                         {% for j in range(word | length) %}
-                            <span class="{% if color[j] == 'X' %}black{% elif color[j] == 'G' %}green{% else %}yellow{% endif %}">
+                            <span class="{% if color[j] == 'X' %}black{% elif color[j] == 'G' %}green{% elif color[j] == 'g' %}greenpan{% elif color[j] == 'x' %}blackpan{% endif %}">
                                 {{ word[j] }}
                             </span>
                         {% endfor %}
