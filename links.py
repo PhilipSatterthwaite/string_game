@@ -63,4 +63,5 @@ def find_links(guess, answer):
 
     return ''.join(colored), G_locs_saved
 
-
+word = find_links('BITTERNUT', 'TRIBUTE')
+print(word)
