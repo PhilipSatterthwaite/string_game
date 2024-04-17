@@ -46,6 +46,8 @@ def find_links(guess, answer):
     G_locs_saved = G_locs.copy()
 
     if not G_locs:
+        if sorted(set(guess)) == sorted(set(answer)) and guess != answer:
+            return ''.join(colored).lower(), G_locs_saved
         return ''.join(colored), G_locs
     while True:
         col_tag = 'G'
@@ -57,11 +59,11 @@ def find_links(guess, answer):
             break
         else:
             del G_locs[0]
-    
     if sorted(set(guess)) == sorted(set(answer)) and guess != answer:
         return ''.join(colored).lower(), G_locs_saved
 
     return ''.join(colored), G_locs_saved
 
-word = find_links('BITTERNUT', 'TRIBUTE')
-print(word)
+
+#word = find_links('BITTERNUT', 'TRIBUNE')
+#print(word)
