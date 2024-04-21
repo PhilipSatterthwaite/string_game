@@ -47,7 +47,7 @@
             height: 30px; /* Set a fixed height */
             line-height: 30px; /* Set line height equal to height for vertical centering */
             font-weight: bold; /* Make the letters bold */
-            box-shadow: inset 0 0 0 4px #8B7500;
+            box-shadow: inset 0 0 0 6px #fcdd30;
         }
         
         .input-letters {
@@ -179,6 +179,26 @@
             } else if (event.key === 'Enter') {
                 // If Enter key is pressed, submit the form
                 document.getElementById('guess-form').submit();
+            } else if (event.key === ' ') {
+                // If spacebar is pressed, shuffle the scrambled letters list and update the display
+                var scrambledLettersContainer = document.querySelector('.scrambled-letters');
+                var scrambledLetters = document.querySelectorAll('.letter-scrambled');
+                var shuffledLetters = Array.from(scrambledLetters).map(function(element) {
+                    return element.textContent.trim();
+                });
+                shuffleArray(shuffledLetters);
+                scrambledLetters.forEach(function(element, index) {
+                    element.textContent = shuffledLetters[index];
+                });
+            }
+        }
+
+        function shuffleArray(array) {
+            for (var i = array.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
             }
         }
 
