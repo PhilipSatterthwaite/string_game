@@ -16,7 +16,7 @@ def pick_random_word(file_path):
     return random_word
 
 #-------------------------------------------------------------------------------------
-answer = pick_random_word("/home/noclue/string_game/gen_word_list/z_perfectfilt_7.txt")
+answer = "TRIBUNE" #pick_random_word("/home/noclue/string_game/gen_word_list/z_perfectfilt_7.txt")
 gen_file = True
 #-------------------------------------------------------------------------------------
 
