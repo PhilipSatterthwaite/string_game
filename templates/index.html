@@ -157,7 +157,7 @@
         function handleKeyPress(event) {
             var keyPressed = event.key;
             var guessField = document.getElementById('guess');            
-            if ((event.keyCode >= 65 && event.keyCode <= 90)) {
+            if ((event.keyCode >= 65 && event.keyCode <= 90) && guessField.value.length < 11) {
                 // Append the typed character to the guess input field
                 guessField.value += keyPressed.toUpperCase();
                 // Display the typed letter in grey color
@@ -190,6 +190,10 @@
                 scrambledLetters.forEach(function(element, index) {
                     element.textContent = shuffledLetters[index];
                 });
+            }
+
+            if (guessField.value.length > 11) {
+                showErrorMessage("Too Long");
             }
         }
 
@@ -244,14 +248,6 @@
         </div>
         <div class="error-message" id="error-message"></div>
         
-
-        <form method="POST">
-            <input type="text" id="guess" name="guess" maxlength="20">
-            <input type="submit" value="Submit">
-        </form>
-
-        
-
 
         {% if guessed_list %}
             <ul style="list-style-type: none; padding: 0;">
