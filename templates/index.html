@@ -31,7 +31,8 @@
             display: inline-block;
             padding: 5px;
             border-radius: 5px;
-            margin-bottom: 5px; /* Add space between rows */
+            margin-bottom: 10px; /* Add space between rows */
+            margin-right: 5px;
             width: 25px; /* Set a fixed width */
             height: 25px; /* Set a fixed height */
             line-height: 30px; /* Set line height equal to height for vertical centering */
@@ -47,10 +48,10 @@
             padding: 5px;
             border-radius: 5px;
             margin-bottom: 5px; /* Add space between rows */
-            margin-right: 5px; /* Add margin to space out the letters */
-            width: 30px; /* Set a fixed width */
-            height: 30px; /* Set a fixed height */
-            line-height: 30px; /* Set line height equal to height for vertical centering */
+            margin-right: 10px; /* Add margin to space out the letters */
+            width: 25px; /* Set a fixed width */
+            height: 25px; /* Set a fixed height */
+            line-height: 25px; /* Set line height equal to height for vertical centering */
             color: white;
             background-color: black;
         }
@@ -265,7 +266,7 @@
                                 {% set line_length = link[1] %}
                                 {% set line_start_x = (start_letter_index - (word | length) / 2 + 1/2) * letter_width + container_width/2%} {# Adjusting start position relative to the center #}
                                 {% set line_width = line_length * letter_width - letter_width%}
-                                <span class="word-line" style="position: absolute; left: {{ line_start_x }}px; top: 35%; width: {{ line_width }}px; height: 10px; background-color: darkgreen; z-index: -1;"></span>
+                                <span class="word-line" style="position: absolute; left: {{ line_start_x }}px; top: 35%; width: {{ line_width }}px; height: 4px; background-color: darkgreen; z-index: -1;"></span>
                                 {% endfor %}
                         {% endif %}
                         </li>
