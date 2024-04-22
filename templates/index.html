@@ -158,20 +158,21 @@
             var keyPressed = event.key;
             var guessField = document.getElementById('guess');            
             if ((event.keyCode >= 65 && event.keyCode <= 90)) {
-                if (guessField.value.length > 11) {
+                if (guessField.value.length > 10) {
                     var errorMessage = document.getElementById('error-message');
                     errorMessage.style.display = 'block';
                     showErrorMessage("Too Long");
                     return;
+                } else {
+                    // Append the typed character to the guess input field
+                    guessField.value += keyPressed.toUpperCase();
+                    // Display the typed letter in grey color
+                    var enteredLetters = document.getElementById('entered-letters');
+                    var letterSpan = document.createElement('span');
+                    letterSpan.textContent = keyPressed.toUpperCase();
+                    letterSpan.className = 'input-letters'; // Set the class to 'letter-scrambled'
+                    enteredLetters.appendChild(letterSpan);
                 }
-                // Append the typed character to the guess input field
-                guessField.value += keyPressed.toUpperCase();
-                // Display the typed letter in grey color
-                var enteredLetters = document.getElementById('entered-letters');
-                var letterSpan = document.createElement('span');
-                letterSpan.textContent = keyPressed.toUpperCase();
-                letterSpan.className = 'input-letters'; // Set the class to 'letter-scrambled'
-                enteredLetters.appendChild(letterSpan);
             } else if (event.key === 'Backspace') {
                 // Remove the last letter from the displayed letters
                 var enteredLetters = document.getElementById('entered-letters');
