@@ -157,7 +157,13 @@
         function handleKeyPress(event) {
             var keyPressed = event.key;
             var guessField = document.getElementById('guess');            
-            if ((event.keyCode >= 65 && event.keyCode <= 90) && guessField.value.length < 11) {
+            if ((event.keyCode >= 65 && event.keyCode <= 90)) {
+                if (guessField.value.length > 11) {
+                    var errorMessage = document.getElementById('error-message');
+                    errorMessage.style.display = 'block';
+                    showErrorMessage("Too Long");
+                    return;
+                }
                 // Append the typed character to the guess input field
                 guessField.value += keyPressed.toUpperCase();
                 // Display the typed letter in grey color
@@ -192,9 +198,6 @@
                 });
             }
 
-            if (guessField.value.length > 11) {
-                showErrorMessage("Too Long");
-            }
         }
 
         function shuffleArray(array) {
