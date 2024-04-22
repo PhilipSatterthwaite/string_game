@@ -27,26 +27,18 @@
             margin-top: 20px; /* Add some top margin for spacing */
         }
 
-        .black, .green {
+        .black, .green, .blackpan, .greenpan {
             display: inline-block;
-            padding: 5px;
-            border-radius: 5px;
-            margin-bottom: 5px; /* Add space between rows */
-            width: 30px; /* Set a fixed width */
-            height: 30px; /* Set a fixed height */
-            line-height: 30px; /* Set line height equal to height for vertical centering */
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px; /* Add space between rows */
+            width: 25px; /* Set a fixed width */
+            height: 25px; /* Set a fixed height */
+            line-height: 25px; /* Set line height equal to height for vertical centering */
             font-weight: bold; /* Make the letters bold */
         }
 
         .blackpan, .greenpan{
-            display: inline-block;
-            padding: 5px;
-            border-radius: 5px;
-            margin-bottom: 5px; /* Add space between rows */
-            width: 30px; /* Set a fixed width */
-            height: 30px; /* Set a fixed height */
-            line-height: 30px; /* Set line height equal to height for vertical centering */
-            font-weight: bold; /* Make the letters bold */
             box-shadow: inset 0 0 0 3px #ffd900;
         }
         
@@ -251,7 +243,6 @@
                
         </div>
         <div class="error-message" id="error-message"></div>
-        
 
         {% if guessed_list %}
             <ul style="list-style-type: none; padding: 0;">
