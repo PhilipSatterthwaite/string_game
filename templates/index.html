@@ -266,7 +266,7 @@
                                 {% set line_length = link[1] %}
                                 {% set line_start_x = (start_letter_index - (word | length) / 2 + 1/2) * letter_width + container_width/2%} {# Adjusting start position relative to the center #}
                                 {% set line_width = line_length * letter_width - letter_width%}
-                                {% set vert_pos = 20 + link[2] * 20 %}
+                                {% set vert_pos = 25 + link[2] * 10 %}
                                 <span class="word-line" style="position: absolute; left: {{ line_start_x }}px; top: {{vert_pos}}%; width: {{ line_width }}px; height: 4px; background-color: darkgreen; z-index: -1;"></span>
                                 {% endfor %}
                         {% endif %}
