@@ -20,19 +20,19 @@ def find_links(guess, answer):
     for link in correct_links:
         locations = [i for i in range(len(guess)) if guess.startswith(link, i)]  # Find all occurrences of the link in guess
         for location in locations:
-            G_locs.append([location, len(link)])
+            G_locs.append([location, len(link),1])
 
     # Sort G_locs based on the first subelement of each element in ascending order
     G_locs.sort(key=lambda x: x[0])
 
     # Initialize a dictionary to keep track of the maximum second subelement for each unique first subelement
     max_lengths = {}
-    for location, length in G_locs:
+    for location, length, pos in G_locs:
         if location not in max_lengths or length > max_lengths[location]:
             max_lengths[location] = length
     
     # Filter G_locs to keep only the elements with the largest second subelement for each unique first subelement
-    G_locs = [[location, length] for location, length in G_locs if length == max_lengths[location]]
+    G_locs = [[location, length, pos] for location, length, pos in G_locs if length == max_lengths[location]]
     # Loop through each element A
     for idx_a, element_a in enumerate(G_locs):
         a_sum = sum(element_a)
@@ -80,12 +80,12 @@ def find_links(guess, answer):
         else:
             position = 0
 
-        G_locs_saved[i].append(position)
+        G_locs_saved[i][2] = position
 
 
     return ''.join(colored), G_locs_saved
 
 
-colors, glocs = find_links('AIA', 'BRAINIAC')
+colors, glocs = find_links('NUPTIAL', 'LILLIPUTIAN')
 print(colors)
 print(glocs)
