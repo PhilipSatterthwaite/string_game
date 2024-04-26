@@ -49,6 +49,7 @@ def find_links(guess, answer):
         if sorted(set(guess)) == sorted(set(answer)) and guess != answer:
             return ''.join(colored).lower(), G_locs_saved
         return ''.join(colored), G_locs
+    #set color tags
     while True:
         col_tag = 'G'
         
@@ -62,8 +63,33 @@ def find_links(guess, answer):
     if sorted(set(guess)) == sorted(set(answer)) and guess != answer:
         return ''.join(colored).lower(), G_locs_saved
 
+    #set G_locs heights. Central if no overlaps. High or low if overlaps
+    position = 1
+    for i in range(len(G_locs_saved)):
+        overlaps = False
+        for j in range(len(G_locs_saved)):
+            if G_locs_saved[j][0] < G_locs_saved[i][0] and G_locs_saved[j][0] + G_locs_saved[j][1] > G_locs_saved[i][0]:
+                overlaps = True
+                print("1")
+                print(overlaps)
+            elif G_locs_saved[j][0] > G_locs_saved[i][0] and G_locs_saved[i][0] + G_locs_saved[i][1] > G_locs_saved[j][0]:
+                overlaps = True
+                print("2")
+
+        if overlaps == False:
+            position = 1
+            print("here")
+        elif position == 0:
+            position = 2
+        else:
+            position = 0
+
+        G_locs_saved[i].append(position)
+
+
     return ''.join(colored), G_locs_saved
 
 
-#word = find_links('BITTERNUT', 'TRIBUNE')
-#print(word)
+colors, glocs = find_links('AIA', 'BRAINIAC')
+print(colors)
+print(glocs)
